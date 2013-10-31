@@ -43,11 +43,9 @@
         Copy the jar file glassfish-jdbc-realm-salted to the glassfish directory <code>glassfish/domains/domain1/lib/ext</code>
         <h4>Register login module</h4>
         Register the new LoginModule in the file <code>glassfish/domains/domain1/config/login.conf</code>. Add the following lines
-        <pre><code>
-jdbcSaltRealm {
+        <pre><code>jdbcSaltRealm {
 	com.ja.glassfish.auth.realm.jdbc.JDBCLoginModule required;
-};
-        </code></pre>
+};</code></pre>
 
         <h4>Create the Authentication Realm</h4>
         TODO
@@ -55,8 +53,7 @@ jdbcSaltRealm {
         <h4>Configure the Web-Application</h4>
         Set the new Authentication Realm in your <code>WEB-INF/web.xml</code> in the <code>login-config</code> section.
         
-        <pre><code class="xml">
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        <pre><code class="xml"><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
 
@@ -64,8 +61,7 @@ jdbcSaltRealm {
 		<auth-method>BASIC</auth-method>
 		<realm-name>saltedRealm</realm-name>
 	</login-config>
-</web-app>        	
-        </code></pre>
+</web-app></code></pre>
       </section>
     </div>
 
