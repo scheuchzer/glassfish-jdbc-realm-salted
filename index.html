@@ -53,15 +53,14 @@
         <h4>Configure the Web-Application</h4>
         Set the new Authentication Realm in your <code>WEB-INF/web.xml</code> in the <code>login-config</code> section.
         
-        <pre><code class="xml"><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        <pre><code class="xml">&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
-
-  <login-config>
-		<auth-method>BASIC</auth-method>
-		<realm-name>saltedRealm</realm-name>
-	</login-config>
-</web-app></code></pre>
+  &lt;login-config>
+    &lt;auth-method>BASIC&lt;/auth-method>
+    &lt;realm-name>saltedRealm&lt;/realm-name>
+  &lt;/login-config>
+&lt;/web-app></code></pre>
       </section>
     </div>
 
