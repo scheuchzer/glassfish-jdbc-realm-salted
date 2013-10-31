@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Glassfish-jdbc-realm-salted : A JDBC Realm for Glassfish using Salts and PBKDF2WithHmacSHA1" />
+    <meta name="description" content="glassfish-jdbc-realm-salted : A JDBC Realm for Glassfish using Salts and PBKDF2WithHmacSHA1" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Glassfish-jdbc-realm-salted</title>
+    <title>glassfish-jdbc-realm-salted</title>
   </head>
 
   <body>
@@ -32,22 +31,26 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h3>
-          <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+          <a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h3>
 
-          <p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+          <p>glassfish-jdbc-realm-salted provides a Realm implementation for Glassfish that authenticates against a JDBC DataSource
+            that stores the user passwords as salted hashes. 
+          </p>
+        <h3>
+          <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage
+        </h3>
+        <h4>Install the jar</h4>
+        Copy the jar file glassfish-jdbc-realm-salted to the glassfish directory <code>glassfish/domains/domain1/lib/ext</code>
+        <h4>Register login module</h4>
+        Register the new LoginModule in the file <code>glassfish/domains/domain1/config/login.conf</code>. Add the following lines
+        <pre><code>
+jdbcSaltRealm {
+	com.ja.glassfish.auth.realm.jdbc.JDBCLoginModule required;
+};
+        </code></pre>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-          <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-          <h3>
-            <a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates
-          </h3>
-
-
+        <h4>Create the Authentication Realm</h4>
+        TODO
       </section>
     </div>
 
