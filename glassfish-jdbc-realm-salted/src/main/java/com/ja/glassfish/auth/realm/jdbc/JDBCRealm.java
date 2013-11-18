@@ -77,6 +77,7 @@ import org.glassfish.hk2.api.ActiveDescriptor;
 import org.glassfish.hk2.utilities.BuilderHelper;
 import org.jvnet.hk2.annotations.Service;
 
+import com.ja.security.PasswordHash;
 import com.sun.appserv.connectors.internal.api.ConnectorRuntime;
 import com.sun.enterprise.security.BaseRealm;
 import com.sun.enterprise.security.auth.realm.BadRealmException;

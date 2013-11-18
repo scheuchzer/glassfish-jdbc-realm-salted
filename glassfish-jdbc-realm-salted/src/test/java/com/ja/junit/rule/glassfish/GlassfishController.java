@@ -50,7 +50,7 @@ import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ja.glassfish.auth.realm.jdbc.PasswordHash;
+import com.ja.security.PasswordHash;
 import com.sun.enterprise.security.auth.realm.Realm;
 
 /**

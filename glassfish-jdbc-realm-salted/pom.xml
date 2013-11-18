@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.java-adventures.glassfish.realm.salted</groupId>
@@ -9,9 +10,14 @@
 	</parent>
 	<artifactId>glassfish-jdbc-realm-salted</artifactId>
 	<packaging>jar</packaging>
-	<url>http://java-adventures.com</url>
+	<url>http://www.java-adventures.com/glassfish-jdbc-realm-salted/</url>
+	<name>Glassfish JDBC Realm - Salted</name>
 	<description>A JDBC Realm for Glassfish using Salts and PBKDF2WithHmacSHA1</description>
 	<dependencies>
+		<dependency>
+			<groupId>com.java-adventures.security</groupId>
+			<artifactId>securepassword-hash</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -43,9 +49,7 @@
 			<scope>test</scope>
 			<type>pom</type>
 		</dependency>
-
 	</dependencies>
-	<name>Glassfish JDBC Realm - Salted</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -55,6 +59,28 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.java-adventures.security</groupId>
+									<artifactId>securepassword-hash</artifactId>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
