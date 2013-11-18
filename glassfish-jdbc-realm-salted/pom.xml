@@ -61,6 +61,7 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<!-- Copy the PasswordHash helper class to the classes dir. We only want one single jar. -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
