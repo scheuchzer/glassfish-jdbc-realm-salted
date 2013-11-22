@@ -1,90 +1,119 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8' />
+<head>
+	<title>glassfish-jdbc-realm-salted</title>
+	<meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="glassfish-jdbc-realm-salted : A JDBC Realm for Glassfish using Salts and PBKDF2WithHmacSHA1" />
+	<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+</head>
+<body>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>glassfish-jdbc-realm-salted</title>
-  </head>
 
-  <body>
+<xmp theme="united" style="display:none;">
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/scheuchzer/glassfish-jdbc-realm-salted">View on GitHub</a>
+<header class="inner">
+<h1 id="project_title"> glassfish-jdbc-realm-salted</h1>
+<h2 id="project_tagline">A JDBC Realm for Glassfish using Salts and PBKDF2WithHmacSHA1</h2>
 
-          <h1 id="project_title">glassfish-jdbc-realm-salted</h1>
-          <h2 id="project_tagline">A JDBC Realm for Glassfish using Salts and PBKDF2WithHmacSHA1</h2>
+<section id="downloads">
+	<a class="zip_download_link" href="https://github.com/scheuchzer/glassfish-jdbc-realm-salted/zipball/master">Download this project as a .zip file</a>
+	<a class="tar_download_link" href="https://github.com/scheuchzer/glassfish-jdbc-realm-salted/tarball/master">Download this project as a tar.gz file</a>
+</section>
+</header>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/scheuchzer/glassfish-jdbc-realm-salted/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/scheuchzer/glassfish-jdbc-realm-salted/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+## Overview
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-          <a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h3>
+[glassfish-jdbc-realm-salted](https://github.com/scheuchzer/glassfish-jdbc-realm-salted) provides an Authentication Realm implementation for Glassfish that authenticates against a JDBC DataSource that stores the user passwords as salted hashes.
 
-          <p><a href="https://github.com/scheuchzer/glassfish-jdbc-realm-salted">glassfish-jdbc-realm-salted</a> provides a Realm implementation for Glassfish that authenticates against a JDBC DataSource
-            that stores the user passwords as salted hashes. 
-          </p>
-        <h3>
-          <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage
-        </h3>
-        <h4>Install the jar</h4>
-        Copy the jar file glassfish-jdbc-realm-salted to the glassfish directory <code>glassfish/domains/domain1/lib/ext</code>
-        <h4>Register login module</h4>
-        Register the new LoginModule in the file <code>glassfish/domains/domain1/config/login.conf</code>. Add the following lines
-        <pre><code>jdbcSaltRealm {
+It uses the same configuration properties for database tables and columns as the original JDBCRealm provided by Glassfish and appropriate defaults for the security related properties to enable high security for your users passwords in a simple way.
+
+## Why a new implementation?
+
+The existing JDBCRealm only supports hashing of your passwords. It's not possible to add a salt. 
+
+This implementation adds by default:
+
+- Salt 
+- PBKDF2WithHmacSHA1 hashing
+- Slow *equals* function to prevent time based attacks
+
+## Usage
+
+### Install the jar
+
+Copy the jar file glassfish-jdbc-realm-salted to the glassfish directory `glassfish/domains/domain1/lib`
+
+### Register login module
+
+Register the new LoginModule in the file `glassfish/domains/domain1/config/login.conf`. Add the following lines
+
+```
+jdbcSaltRealm {
 	com.ja.glassfish.auth.realm.jdbc.JDBCLoginModule required;
-};</code></pre>
+};
+```
 
-        <h4>Create the Authentication Realm</h4>
-        TODO
-        
-        <h4>Configure the Web-Application</h4>
-        Set the new Authentication Realm in your <code>WEB-INF/web.xml</code> in the <code>login-config</code> section.
-        
-        <pre><code class="xml">&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+### Create the Authentication Realm
+
+Open the Glassfish [admin console](http://localhost:4848) and go to *Configurations* -> *server-config* -> *Security* -> *Realms* -> *New* and register a new Realm.
+
+![Creating a Realm](images/newRealm.png)
+
+
+### Configure the Web-Application
+
+Set the new Authentication Realm in your *WEB-INF/web.xml* in the *login-config* section.
+
+```xml
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
-  &lt;login-config>
-    &lt;auth-method>BASIC&lt;/auth-method>
-    &lt;realm-name>saltedRealm&lt;/realm-name>
-  &lt;/login-config>
-&lt;/web-app></code></pre>
-      </section>
-    </div>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>saltedRealm</realm-name>
+  </login-config>
+</web-app>
+```
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Glassfish-jdbc-realm-salted maintained by <a href="https://github.com/scheuchzer">scheuchzer</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+### Authentication Realm Configuration Parameters
 
-    
-<script type="text/javascript">
+| Parameter                | Default            | Description               |
+|--------------------------|--------------------|---------------------------|
+| jaas-context             | (mandatory)        | the name of the login module as defined in `login.conf` |
+| datasource-jndi          | (mandatory)        | the JNDI name of the datasource to use. |
+| user-table               | (mandatory)        | the name of the user table |
+| group-table              | (mandatory)        | the name of the group (or role) table |
+| user-name-column         | (mandatory)        | the column name of username. Must be the same name in the user and the group table |
+| password-column          | (mandatory)        | the column name of password. Hashes have to form: `iterations:salt:hash` |
+| group-name-column        | (mandatory)        | the column name of the group |
+| hash-byte-size           | 24                 | the length of the hash to compute in bytes. Can be changed without breaking existing hashes. |
+| salt-byte-size           | 24                 | the length of the salt to compute in bytes. Can be changed without breaking existing hashes. |
+| pbkdf2-algorithm         | PBKDF2WithHmacSHA1 | the name of the pbkdf2 algorithm. Must be known to the  `javax.crypto.SecretKeyFactory` |
+| pbkdf2-iterations        | 20000              | the iteration count (slowness factor). Can be changed without breaking existing hashes. |
+| secure-random-algorithm  | SHA1PRNG           | the name of the algorithm to generate a salt. Must be known to `java.security.SecureRandom`. Can be changed without breaking existing hashes. |
 
- var _gaq = _gaq || [];
- _gaq.push(['_setAccount', 'UA-38311626-1']);
- _gaq.push(['_trackPageview']);
+### Maven Dependency
+Releases are available through the maven central repository.
 
- (function() {
-   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
- })();
+```xml
+<dependency>
+	<groupId>com.java-adventures.glassfish.realm.salted</groupId>
+	<artifactId>glassfish-jdbc-realm-salted</artifactId>
+	<version>0.1.0</version>
+</dependency>
+```
 
-</script>
-  </body>
+### Author
+
+- Thomas Scheuchzer 
+  - http://java-adventures.com
+  - https://github.com/scheuchzer
+
+
+<a href="https://github.com/scheuchzer/glassfish-jdbc-realm-salted"><img style="position: fixed; top: 0; right: 0; border: 0; z-index: 1000; margin: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+</xmp>
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</body>
+
 </html>
