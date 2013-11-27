@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -9,7 +8,7 @@
 	</parent>
 	<groupId>com.java-adventures.glassfish.realm.salted</groupId>
 	<artifactId>glassfish-jdbc-realm-salted-parent</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<packaging>pom</packaging>
 	<name>Glassfish JDBC Realm - Parent</name>
 	<url>http://www.java-adventures.com/glassfish-jdbc-realm-salted/</url>
@@ -162,6 +161,6 @@
 		<url>git@github.com:scheuchzer/glassfish-jdbc-realm-salted.git</url>
 		<connection>scm:git:git@github.com:scheuchzer/glassfish-jdbc-realm-salted.git</connection>
 		<developerConnection>scm:git:git@github.com:scheuchzer/glassfish-jdbc-realm-salted.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>glassfish-jdbc-realm-salted-parent-0.2.0</tag>
 	</scm>
 </project>
