@@ -15,12 +15,15 @@ limitations under the License.
  */
 package com.ja.glassfish.auth.realm.jdbc;
 
+import static com.ja.junit.rule.glassfish.ConfigObject.defaultUserAndGroupTables;
+import static com.ja.junit.rule.glassfish.ConfigObject.deployment;
+import static com.ja.junit.rule.glassfish.ConfigObject.jdbcAuthRealm;
+import static com.ja.junit.rule.glassfish.ConfigObject.user;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -30,69 +33,72 @@ import org.junit.Test;
 
 import com.ja.glassfish.auth.realm.jdbc.app.DummyServlet;
 import com.ja.junit.rule.glassfish.GlassfishController;
+import com.ja.junit.rule.glassfish.GlassfishPreStartConfigurator;
+import com.ja.junit.rule.glassfish.Response;
 
 /**
  * Tests the JDBCRealm against an embedded Glassfish instance.
  * 
  * @author Thomas Scheuchzer, www.java-adventures.com
- *
+ * 
  */
 public class JDBCRealmIT {
 
-	@Rule
-	public GlassfishController glassfish = new GlassfishController();
+	private final GlassfishPreStartConfigurator startCfg = new GlassfishPreStartConfigurator();
 
-	public JDBCRealmIT() throws Exception {
-		glassfish
-				.setHttpPort(8642)
-				.setLoginConf(
-						new File(getClass().getClassLoader()
-								.getResource("login.conf").toURI()))
-				.createUserAndRoleTables()
-				.createAuthRealm("testRealm", JDBCRealm.class);
+	@Rule
+	public GlassfishController glassfish = new GlassfishController(startCfg)
+			.create(defaultUserAndGroupTables())
+			.create(jdbcAuthRealm("testRealm", "jdbcSaltRealm", JDBCRealm.class));
+
+	public JDBCRealmIT() throws URISyntaxException {
+		startCfg.setHttpPort(8642).setLoginConf(
+				new File(getClass().getClassLoader().getResource("login.conf")
+						.toURI()));
 	}
 
 	@Test
-	public void testLoginInValidUser() throws Exception {
-		glassfish.addUser("test", "abc123", "test");
+	public void testLoginValidUser() throws Exception {
+		glassfish.create(user("test", "abc123", "test"));
 		deployDummyApp();
 
-		HttpURLConnection httpCon = glassfish.executeHttpRequest("test/dummy",
-				"test", "abc123");
+		Response response = glassfish.executeHttpRequest("/test/dummy", "test",
+				"abc123");
 
-		assertThat(httpCon.getResponseCode(), is(200));
-		byte[] content = new byte[httpCon.getContentLength()];
-		((InputStream) httpCon.getContent()).read(content);
-		assertThat(new String(content), is("OK"));
+		assertThat(response.getStatus(), is(200));
+		assertThat(response.getContentAsString(), is("OK"));
+	}
+
+	@Test
+	public void testLoginWrongPassword() throws Exception {
+		glassfish.create(user("test", "abc123", "test"));
+		deployDummyApp();
+
+		Response response = glassfish.executeHttpRequest("/test/dummy", "test",
+				"wrongPassword");
+
+		assertThat(response.getStatus(), is(401));
 	}
 
 	@Test
 	public void testLoginNoUsersExist() throws Exception {
 		deployDummyApp();
 
-		HttpURLConnection httpCon = glassfish.executeHttpRequest("test/dummy",
-				"test", "abc123");
+		Response response = glassfish.executeHttpRequest("/test/dummy", "test",
+				"abc123");
 
-		assertThat(httpCon.getResponseCode(), is(401));
-		glassfish.addUser("test", "abc123", "test");
-	}
-
-	@Test
-	public void testLoginWrongPassword() throws Exception {
-		glassfish.addUser("test", "abc123", "test");
-		deployDummyApp();
-
-		HttpURLConnection httpCon = glassfish.executeHttpRequest("test/dummy",
-				"test", "wrongPassword");
-
-		assertThat(httpCon.getResponseCode(), is(401));
+		assertThat(response.getStatus(), is(401));
 	}
 
 	private void deployDummyApp() {
-		glassfish.deploy(ShrinkWrap.create(WebArchive.class, "test.war")
-				.addPackage(DummyServlet.class.getPackage())
-				.addAsWebInfResource("web.xml")
-				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml"));
+		deployDummyApp("test.war");
 	}
 
+	private void deployDummyApp(String warName) {
+		glassfish.create(deployment(ShrinkWrap
+				.create(WebArchive.class, warName)
+				.addPackage(DummyServlet.class.getPackage())
+				.addAsWebInfResource("web.xml")
+				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")));
+	}
 }

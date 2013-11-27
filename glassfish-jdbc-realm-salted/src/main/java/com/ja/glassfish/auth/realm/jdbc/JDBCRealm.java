@@ -124,10 +124,10 @@ public final class JDBCRealm extends IASRealm {
 			LogDomains.SECURITY_LOGGER);
 
 	public static final String AUTH_TYPE = "jdbc-with-salt";
-	private Map<String, Vector<String>> groupCache = new HashMap<>();
+	private final Map<String, Vector<String>> groupCache = new HashMap<>();
 	private String passwordQuery = null;
 	private String groupQuery = null;
-	private PasswordHash passwordHash = new PasswordHash();
+	private final PasswordHash passwordHash = new PasswordHash();
 
 	private ActiveDescriptor<ConnectorRuntime> cr;
 
@@ -176,9 +176,11 @@ public final class JDBCRealm extends IASRealm {
 		checkPropertySet(passwordColumn, PASSWORD_COLUMN);
 		checkPropertySet(groupNameColumn, GROUP_NAME_COLUMN);
 
-		passwordQuery = String.format("SELECT %s FROM %s WHERE %s = ?", passwordColumn, userTable, userNameColumn);
+		passwordQuery = String.format("SELECT %s FROM %s WHERE %s = ?",
+				passwordColumn, userTable, userNameColumn);
 
-		groupQuery = String.format("SELECT %s FROM %s WHERE %s = ?", groupNameColumn, groupTable, groupTableUserNameColumn);
+		groupQuery = String.format("SELECT %s FROM %s WHERE %s = ?",
+				groupNameColumn, groupTable, groupTableUserNameColumn);
 
 		this.setProperty(BaseRealm.JAAS_CONTEXT_PARAM, jaasCtx);
 		if (dbUser != null && dbPassword != null) {
@@ -260,6 +262,7 @@ public final class JDBCRealm extends IASRealm {
 	 * 
 	 */
 	public String[] authenticate(String username, char[] password) {
+		LOG.log(Level.INFO, "authenticating username={0}", username);
 		String[] groups = null;
 		if (isUserValid(username, password)) {
 			groups = findGroups(username);
