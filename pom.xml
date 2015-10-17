@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.java-adventures.glassfish.realm.salted</groupId>
 	<artifactId>glassfish-jdbc-realm-salted-parent</artifactId>
-	<version>0.2.1</version>
+	<version>0.2.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Glassfish JDBC Realm - Parent</name>
 	<url>http://www.java-adventures.com/glassfish-jdbc-realm-salted/</url>
@@ -156,6 +156,6 @@
 		<url>git@github.com:scheuchzer/glassfish-jdbc-realm-salted.git</url>
 		<connection>scm:git:git@github.com:scheuchzer/glassfish-jdbc-realm-salted.git</connection>
 		<developerConnection>scm:git:git@github.com:scheuchzer/glassfish-jdbc-realm-salted.git</developerConnection>
-		<tag>glassfish-jdbc-realm-salted-parent-0.2.1</tag>
+		<tag>HEAD</tag>
 	</scm>
 </project>
