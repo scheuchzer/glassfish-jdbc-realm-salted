@@ -258,7 +258,7 @@ public final class JDBCRealm extends IASRealm {
 	 *            User to authenticate.
 	 * @param password
 	 *            Given password.
-	 * @returns true of false, indicating authentication status.
+	 * @return true of false, indicating authentication status.
 	 * 
 	 */
 	public String[] authenticate(String username, char[] password) {
