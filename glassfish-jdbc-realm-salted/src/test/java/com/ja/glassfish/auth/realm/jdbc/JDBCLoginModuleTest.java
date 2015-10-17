@@ -37,7 +37,7 @@ public class JDBCLoginModuleTest {
 			.create(jdbcAuthRealm(
 					"dummyJdbcRealm",
 					"dummy",
-					com.sun.enterprise.security.ee.auth.realm.jdbc.JDBCRealm.class))
+					com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm.class))
 			.create(jdbcAuthRealm("jdbcRealm", "jdbc", JDBCRealm.class));
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
