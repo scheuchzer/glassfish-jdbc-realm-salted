@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/scheuchzer/glassfish-jdbc-realm-salted.svg?branch=master)](https://travis-ci.org/scheuchzer/glassfish-jdbc-realm-salted)
+
 glassfish-jdbc-realm-salted
 ===========================
 
